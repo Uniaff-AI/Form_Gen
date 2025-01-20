@@ -1,6 +1,6 @@
 from tortoise import fields, models
 from datetime import datetime
-from schemas import OfferRead, CountryRead  # Импортируем необходимые схемы
+from schemas import OfferRead, CountryRead
 
 # Модель для страны (Country)
 class Country(models.Model):
@@ -16,7 +16,6 @@ class Country(models.Model):
     class Meta:
         table = "countries"
 
-    # Метод для преобразования в Pydantic-модель
     def to_read_model(self) -> CountryRead:
         return CountryRead(
             code=self.code,
@@ -30,6 +29,18 @@ class Country(models.Model):
         )
 
 
+# Модель для перевода (Translation)
+class OfferTranslation(models.Model):
+    offer = fields.ForeignKeyField("models.Offer", related_name="translations")
+    language = fields.CharField(max_length=50)  # Язык перевода
+    offer_text = fields.CharField(max_length=255)
+    description = fields.TextField()
+    button_text = fields.CharField(max_length=100)
+
+    class Meta:
+        table = "offer_translations"
+
+
 # Модель для оффера (Offer)
 class Offer(models.Model):
     id = fields.IntField(pk=True)
@@ -41,6 +52,7 @@ class Offer(models.Model):
     description = fields.TextField()
     image = fields.CharField(max_length=255)
     link = fields.CharField(max_length=255, null=True)
+    country = fields.ForeignKeyField("models.Country", related_name="offers")  # Добавляем страну
 
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
@@ -48,7 +60,6 @@ class Offer(models.Model):
     class Meta:
         table = "offers"
 
-    # Метод для преобразования в Pydantic-модель
     def to_read_model(self) -> OfferRead:
         return OfferRead(
             id=self.id,
@@ -59,8 +70,8 @@ class Offer(models.Model):
             button_text=self.button_text,
             description=self.description,
             image=self.image,
-            link=self.link if self.link else "",  # Если link None, отдаем пустую строку
             created_at=self.created_at,
             updated_at=self.updated_at,
-            url=f"http://localhost:8000/static/offers/offer_{self.id}.html"
+            url=f"http://localhost:8000/static/offers/offer_{self.id}.html",
+            country_code=self.country.code if self.country else None  # Код страны
         )

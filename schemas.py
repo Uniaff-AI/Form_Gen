@@ -2,18 +2,17 @@ from pydantic import BaseModel, HttpUrl, Field
 from typing import Optional
 from datetime import datetime
 
-
 # Модель для создания оффера
 class OfferCreate(BaseModel):
     offer: str
     geo: str
     price: float
-    discount: int
+    discount: float  # Изменено с int на float для поддержки дробных значений
     button_text: str = Field(..., alias="buttonText")
-    description: str
+    description: Optional[str] = None  # Сделано необязательным
     image: HttpUrl
-    # Убираем поле link, так как оно не нужно
     link: Optional[HttpUrl] = None
+    country_code: int = Field(..., alias="countryCode")  # Используем alias для поддержки camelCase
 
     class Config:
         populate_by_name = True  # Заменяет allow_population_by_field_name
@@ -25,14 +24,14 @@ class OfferRead(BaseModel):
     offer: str
     geo: str
     price: float
-    discount: int
+    discount: float  # Изменено с int на float
     button_text: str
     description: str
     image: HttpUrl
-    # Убираем поле link из модели для чтения
     created_at: datetime
     updated_at: datetime
-    url: HttpUrl  # Это будет URL для статической страницы оффера
+    url: HttpUrl
+    country_code: int  # Код страны
 
     class Config:
         from_attributes = True  # Заменяет orm_mode
@@ -47,7 +46,7 @@ class CountryCreate(BaseModel):
     actions: str
 
     class Config:
-        populate_by_name = True  # Заменяет allow_population_by_field_name
+        populate_by_name = True
 
 
 # Модель для чтения страны (отправка в ответ API)
@@ -62,5 +61,17 @@ class CountryRead(BaseModel):
     url: HttpUrl  # URL для статической страницы страны
 
     class Config:
-        populate_by_name = True  # Заменяет allow_population_by_field_name
-        from_attributes = True  # Заменяет orm_mode
+        populate_by_name = True
+        from_attributes = True
+
+
+# Модель для создания перевода оффера
+class OfferTranslationCreate(BaseModel):
+    offer_id: int
+    language: str
+    offer_text: str
+    description: str
+    button_text: str
+
+    class Config:
+        populate_by_name = True
