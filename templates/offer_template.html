@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ offer.offer }}</title>
+    <style>
+        /* Сброс стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #000; /* Черный текст для всего тела */
+            line-height: 1.4;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 3px dashed #1a73e8;
+            animation: moveDashedBorder 4s linear infinite;
+        }
+
+        @keyframes moveDashedBorder {
+            0% {
+                border-top: 3px dashed #1a73e8;
+                border-right: 3px dashed transparent;
+                border-bottom: 3px dashed transparent;
+                border-left: 3px dashed transparent;
+            }
+            25% {
+                border-top: 3px dashed transparent;
+                border-right: 3px dashed #1a73e8;
+                border-bottom: 3px dashed transparent;
+                border-left: 3px dashed transparent;
+            }
+            50% {
+                border-top: 3px dashed transparent;
+                border-right: 3px dashed transparent;
+                border-bottom: 3px dashed #1a73e8;
+                border-left: 3px dashed transparent;
+            }
+            75% {
+                border-top: 3px dashed transparent;
+                border-right: 3px dashed transparent;
+                border-bottom: 3px dashed transparent;
+                border-left: 3px dashed #1a73e8;
+            }
+            100% {
+                border-top: 3px dashed #1a73e8;
+                border-right: 3px dashed transparent;
+                border-bottom: 3px dashed transparent;
+                border-left: 3px dashed transparent;
+            }
+        }
+
+        /* Стиль для заголовка и описания */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #000; /* Черный текст для описания */
+        }
+
+        .header img {
+            max-width: 100%; /* Изображение теперь будет сжиматься */
+            height: auto;
+            max-height: 300px; /* Ограничиваем максимальную высоту */
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Скидка */
+        .discount-info {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ce2323; /* Красный цвет для скидки */
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Таймер */
+        .discount-info .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ce2323; /* Красный цвет для таймера */
+        }
+
+        /* Значения (цены) */
+        .values {
+            display: flex;
+            justify-content: center; /* Центрируем цены */
+            align-items: center;
+            margin-top: 15px;
+            padding-left: 35px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 32px;
+            margin-right: 10px; /* Добавляем отступ между ценами */
+        }
+
+        .new-price {
+            color: #ce2323; /* Красный цвет для новой цены */
+            font-size: 36px;
+            font-weight: bold;
+            display: inline-block; /* Для правильного выравнивания с левой ценой */
+        }
+
+        /* Формы ввода */
+        .form-group {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            color: #000; /* Черный текст для ввода */
+        }
+
+        /* Кнопка */
+        .button-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .button-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1a73e8;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .button-container a:hover {
+            background: #e36038;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .discount-info {
+                font-size: 20px;
+            }
+
+            .values {
+                font-size: 24px;
+            }
+
+            .button-container a {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .discount-info .countdown {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Название оффера -->
+        <div class="header">
+            <h1>{{ offer.offer }}</h1>
+            <p>{{ offer.description }}</p>
+        </div>
+
+        <!-- Картинка -->
+        <div class="header">
+            <img src="{{ offer.image }}" alt="Изображение продукта">
+        </div>
+
+        <!-- Скидка -->
+        <div class="discount-info">
+            <p>{{ offer.discount }}% Скидка!</p>
+        </div>
+
+        <!-- Цены -->
+        <div class="values">
+            <p class="old-price" id="original_price">{{ offer.price }} $</p>
+            <p class="new-price" id="discounted_price"></p>
+        </div>
+
+        <!-- Таймер -->
+        <div class="discount-info">
+            <p class="countdown" id="timer">Осталось: 10:00</p>
+        </div>
+
+        <!-- Форма -->
+        <form action="{{ offer.link }}" method="POST">
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Имя" required="required">
+            </div>
+            <div class="form-group">
+                <input type="tel" name="phone" placeholder="Номер Телефона" required="required">
+            </div>
+            <div class="button-container">
+                <a href="{{ offer.link }}" target="_blank">{{ offer.button_text }}</a>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        // Таймер
+        let timeRemaining = 600; // 10 минут в секундах
+        const countdownDisplay = document.getElementById('timer');
+
+        function updateTimer() {
+            let minutes = Math.floor(timeRemaining / 60);
+            let seconds = timeRemaining % 60;
+            countdownDisplay.textContent = `Осталось: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            if (timeRemaining > 0) {
+                timeRemaining--;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+
+        // Вычисление цены со скидкой
+        let originalPrice = {{ offer.price }};  // Исходная цена
+        let discount = {{ offer.discount }};    // Скидка в процентах
+
+        let discountedPrice = originalPrice - (originalPrice * discount / 100);
+
+        // Отображаем цену со скидкой
+        document.getElementById('discounted_price').textContent = discountedPrice.toFixed(2) + ' $';
+        document.getElementById('original_price').textContent = originalPrice + ' $';
+    </script>
+</body>
+</html>
