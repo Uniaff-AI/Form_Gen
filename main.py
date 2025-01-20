@@ -3,8 +3,8 @@ import asyncpg
 from fastapi import FastAPI, HTTPException
 from tortoise.contrib.fastapi import register_tortoise
 from typing import List
-from models import Offer, Country, OfferTranslation
-from schemas import OfferCreate, OfferRead, CountryCreate, CountryRead, OfferTranslationCreate
+from models import Offer, Country
+from schemas import OfferCreate, OfferRead, CountryCreate, CountryRead
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from jinja2 import Environment, FileSystemLoader
@@ -109,13 +109,39 @@ async def generate_offer(offer: OfferCreate):
         country=country
     )
 
+    # Переводы для разных языков
+    translations = {
+        'ru': {
+            "remaining": "Осталось",
+            "discount": "Скидка",
+            "name": "Имя",
+            "phone": "Номер Телефона"
+        },
+        'es': {
+            "remaining": "Quedan",
+            "discount": "Descuento",
+            "name": "Nombre",
+            "phone": "Número de Teléfono"
+        },
+        'en': {
+            "remaining": "Remaining",
+            "discount": "Discount",
+            "name": "Name",
+            "phone": "Phone Number"
+        }
+    }
+
+    # Получаем перевод для нужного языка
+    lang = translations.get(country.language, translations['en'])
+
     # Генерация HTML-контента с использованием шаблона
     try:
         template = env.get_template("offer_template.html")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка загрузки шаблона: {str(e)}")
 
-    html_content = template.render(offer=offer_obj)
+    # Передаем нужные данные в шаблон, включая переводы
+    html_content = template.render(offer=offer_obj, translations=lang)
 
     # Определение пути для сохранения HTML-файла
     html_filename = f"offer_{offer_obj.id}.html"
@@ -133,14 +159,12 @@ async def generate_offer(offer: OfferCreate):
 
     return {"url": offer_url}
 
-
 # Эндпоинт для получения всех офферов
 @app.get("/api/offers/", response_model=List[OfferRead])
 async def api_get_offers():
     # Используем prefetch_related для оптимизации запросов, если есть связанные данные
     offers = await Offer.all().prefetch_related('country')
     return [offer.to_read_model() for offer in offers]
-
 
 # Эндпоинт для удаления оффера
 @app.delete("/api/offers/{offer_id}", response_model=dict)
@@ -173,36 +197,8 @@ async def api_create_country(country: CountryCreate):
 # Эндпоинт для получения всех стран
 @app.get("/api/countries/", response_model=List[CountryRead])
 async def api_get_countries():
-    # Используем prefetch_related для оптимизации запросов
     countries = await Country.all()
     return [country.to_read_model() for country in countries]
-
-
-# Эндпоинт для удаления страны
-@app.delete("/api/countries/{country_code}", response_model=dict)
-async def api_delete_country(country_code: int):
-    country = await Country.get_or_none(code=country_code)
-    if not country:
-        raise HTTPException(status_code=404, detail="Страна не найдена")
-    await country.delete()
-    return {"message": "Страна удалена успешно"}
-
-
-# Эндпоинт для добавления перевода оффера
-@app.post("/api/offers/{offer_id}/translations/", response_model=OfferTranslationCreate)
-async def create_offer_translation(offer_id: int, translation: OfferTranslationCreate):
-    offer = await Offer.get_or_none(id=offer_id)
-    if not offer:
-        raise HTTPException(status_code=404, detail="Оффер не найден")
-
-    translation_obj = await OfferTranslation.create(
-        offer=offer,
-        language=translation.language,
-        offer_text=translation.offer_text,
-        description=translation.description,
-        button_text=translation.button_text
-    )
-    return translation_obj
 
 
 # Запуск приложения

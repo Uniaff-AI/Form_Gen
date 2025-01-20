@@ -1,6 +1,6 @@
 from tortoise import fields, models
-from datetime import datetime
 from schemas import OfferRead, CountryRead
+from datetime import datetime
 
 # Модель для страны (Country)
 class Country(models.Model):
@@ -29,18 +29,6 @@ class Country(models.Model):
         )
 
 
-# Модель для перевода (Translation)
-class OfferTranslation(models.Model):
-    offer = fields.ForeignKeyField("models.Offer", related_name="translations")
-    language = fields.CharField(max_length=50)  # Язык перевода
-    offer_text = fields.CharField(max_length=255)
-    description = fields.TextField()
-    button_text = fields.CharField(max_length=100)
-
-    class Meta:
-        table = "offer_translations"
-
-
 # Модель для оффера (Offer)
 class Offer(models.Model):
     id = fields.IntField(pk=True)
@@ -52,7 +40,7 @@ class Offer(models.Model):
     description = fields.TextField()
     image = fields.CharField(max_length=255)
     link = fields.CharField(max_length=255, null=True)
-    country = fields.ForeignKeyField("models.Country", related_name="offers")  # Добавляем страну
+    country = fields.ForeignKeyField("models.Country", related_name="offers")  # Привязка к стране
 
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
@@ -61,6 +49,34 @@ class Offer(models.Model):
         table = "offers"
 
     def to_read_model(self) -> OfferRead:
+        # Получаем язык страны, к которой привязан оффер
+        country_language = self.country.language
+
+        # Переводы для разных языков
+        translations = {
+            'ru': {
+                "remaining": "Осталось",
+                "discount": "Скидка",
+                "name": "Имя",
+                "phone": "Номер Телефона"
+            },
+            'es': {
+                "remaining": "Quedan",
+                "discount": "Descuento",
+                "name": "Nombre",
+                "phone": "Número de Teléfono"
+            },
+            'en': {
+                "remaining": "Remaining",
+                "discount": "Discount",
+                "name": "Name",
+                "phone": "Phone Number"
+            }
+        }
+
+        # Используем перевод в зависимости от языка страны
+        lang = translations.get(country_language, translations['en'])
+
         return OfferRead(
             id=self.id,
             offer=self.offer,
@@ -73,5 +89,10 @@ class Offer(models.Model):
             created_at=self.created_at,
             updated_at=self.updated_at,
             url=f"http://localhost:8000/static/offers/offer_{self.id}.html",
-            country_code=self.country.code if self.country else None  # Код страны
+            country_code=self.country.code if self.country else None,
+            language=country_language,
+            remaining_text=lang['remaining'],
+            discount_text=lang['discount'],
+            name_text=lang['name'],
+            phone_text=lang['phone']
         )

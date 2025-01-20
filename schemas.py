@@ -67,11 +67,14 @@ class CountryRead(BaseModel):
 
 # Модель для создания перевода оффера
 class OfferTranslationCreate(BaseModel):
-    offer_id: int
     language: str
     offer_text: str
     description: str
     button_text: str
+    remaining_text: str = "Осталось"
+    discount_text: str = "Скидка"
+    name_text: str = "Имя"
+    phone_text: str = "Номер Телефона"
 
     class Config:
         populate_by_name = True
