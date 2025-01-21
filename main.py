@@ -9,6 +9,10 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from jinja2 import Environment, FileSystemLoader
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv  # Импортируем для работы с .env файлом
+
+# Загружаем переменные из .env
+load_dotenv()
 
 # Инициализация приложения
 app = FastAPI(
@@ -18,12 +22,11 @@ app = FastAPI(
 )
 
 # Настройка CORS
-origins = [
-    "http://localhost",
-    "http://localhost:5173",
-    # Добавьте другие разрешённые источники
-]
+origins = os.getenv("ALLOWED_ORIGINS")
+if origins is None:
+    raise ValueError("Переменная окружения 'ALLOWED_ORIGINS' не установлена!")
 
+origins = origins.split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Разрешённые источники
@@ -34,42 +37,31 @@ app.add_middleware(
 
 # Получение абсолютного пути к папке templates
 current_dir = os.path.dirname(os.path.abspath(__file__))
-templates_dir = os.path.join(current_dir, "templates")
+templates_dir = os.path.join(current_dir, os.getenv("TEMPLATES_DIR"))
+if templates_dir is None:
+    raise ValueError("Переменная окружения 'TEMPLATES_DIR' не установлена!")
 
 # Настройка Jinja2 Environment для генерации HTML
 env = Environment(loader=FileSystemLoader(templates_dir))
 
-# Убедитесь, что директория для сохранения офферов существует
-static_offers_dir = os.path.abspath(os.path.join(current_dir, "static", "offers"))
+# Получаем путь для сохранения офферов
+static_offers_dir = os.getenv("STATIC_OFFERS_DIR")
+if static_offers_dir is None:
+    raise ValueError("Переменная окружения 'STATIC_OFFERS_DIR' не установлена!")
+
+static_offers_dir = os.path.abspath(os.path.join(current_dir, static_offers_dir))
 os.makedirs(static_offers_dir, exist_ok=True)
 
 # Смонтировать директорию static для обслуживания статических файлов
 app.mount("/static", StaticFiles(directory=os.path.join(current_dir, "static")), name="static")
 
 
-# Функция для создания базы данных, если она не существует
-async def create_database():
-    db_url = os.getenv("DATABASE_URL", "postgres://postgres@localhost:5432")
-    conn = await asyncpg.connect(dsn=db_url)
-    try:
-        # Проверка существования базы данных
-        result = await conn.fetch('SELECT 1 FROM pg_database WHERE datname = $1', 'offers_db')
-        if not result:
-            await conn.execute('CREATE DATABASE offers_db')
-            print("База данных 'offers_db' была создана.")
-    except Exception as e:
-        print(f"Ошибка при создании базы данных: {e}")
-    finally:
-        await conn.close()
-
-
 # Асинхронная инициализация Tortoise ORM
 async def init_tortoise():
-    # Убедитесь, что база данных создана перед запуском Tortoise ORM
-    await create_database()
-
     # Строка подключения для PostgreSQL
-    db_url = os.getenv("DATABASE_URL", "postgres://postgres@localhost:5432/offers_db")
+    db_url = os.getenv("DATABASE_URL")
+    if db_url is None:
+        raise ValueError("Переменная окружения 'DATABASE_URL' не установлена!")
 
     # Регистрация Tortoise ORM
     register_tortoise(
@@ -81,10 +73,10 @@ async def init_tortoise():
     )
 
 
-# Запуск инициализации базы данных и Tortoise ORM в стартапе приложения FastAPI
+# Запуск инициализации Tortoise ORM в стартапе приложения FastAPI
 @app.on_event("startup")
 async def startup():
-    # Инициализация базы данных и подключения Tortoise ORM
+    # Инициализация подключения Tortoise ORM
     await init_tortoise()
 
 
@@ -155,9 +147,14 @@ async def generate_offer(offer: OfferCreate):
         raise HTTPException(status_code=500, detail=f"Ошибка сохранения HTML файла: {str(e)}")
 
     # Генерация полной ссылки на HTML-страницу
-    offer_url = f"http://localhost:8000/static/offers/{html_filename}"
+    base_url = os.getenv('BASE_URL')
+    if base_url is None:
+        raise ValueError("Переменная окружения 'BASE_URL' не установлена!")
+
+    offer_url = f"{base_url}/static/offers/{html_filename}"
 
     return {"url": offer_url}
+
 
 # Эндпоинт для получения всех офферов
 @app.get("/api/offers/", response_model=List[OfferRead])
@@ -165,6 +162,7 @@ async def api_get_offers():
     # Используем prefetch_related для оптимизации запросов, если есть связанные данные
     offers = await Offer.all().prefetch_related('country')
     return [offer.to_read_model() for offer in offers]
+
 
 # Эндпоинт для удаления оффера
 @app.delete("/api/offers/{offer_id}", response_model=dict)
