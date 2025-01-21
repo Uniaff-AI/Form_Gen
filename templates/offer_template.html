@@ -97,7 +97,7 @@
             height: auto;
             max-height: 300px; /* Ограничиваем максимальную высоту */
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         /* Скидка */
@@ -106,13 +106,13 @@
             font-size: 24px;
             font-weight: bold;
             color: #ce2323; /* Красный цвет для скидки */
-            margin-top: 10px;
+            margin-top: 8px;
             margin-bottom: 10px;
         }
 
         /* Таймер */
         .discount-info .countdown {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: bold;
             color: #ce2323; /* Красный цвет для таймера */
         }
@@ -142,8 +142,16 @@
 
         /* Формы ввода */
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* Немного больше отступов, чтобы сделать форму компактной */
             width: 100%;
+        }
+
+        .form-group label {
+            font-size: 14px; /* Меньше шрифт для подписей */
+            color: #333;
+            margin-bottom: 3px;
+            padding: 5px;
+            display: block;
         }
 
         .form-group input {
@@ -241,10 +249,12 @@
         <!-- Форма -->
         <form action="{{ offer.link }}" method="POST">
             <div class="form-group">
-                <input type="text" name="name" placeholder="{{ translations.name }}" required="required">
+                <label for="name">{{ translations.name }}</label>
+                <input type="text" name="name" id="name" placeholder="{{ translations.name }}" required="required">
             </div>
             <div class="form-group">
-                <input type="tel" name="phone" placeholder="{{ translations.phone }}" required="required">
+                <label for="phone">{{ translations.phone }}</label>
+                <input type="tel" name="phone" id="phone" placeholder="{{ translations.phone }}" required="required">
             </div>
             <div class="button-container">
                 <a href="{{ offer.link }}" target="_blank">{{ offer.button_text }}</a>
