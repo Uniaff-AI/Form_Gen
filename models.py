@@ -1,6 +1,19 @@
 from tortoise import fields, models
 from schemas import OfferRead, CountryRead
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+# Загружаем переменные окружения из .env файла
+load_dotenv()
+
+# Получаем значения из .env
+DATABASE_URL = os.getenv("DATABASE_URL")
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
+STATIC_URL = os.getenv("STATIC_URL")
+STATIC_OFFERS_DIR = os.getenv("STATIC_OFFERS_DIR")
+TEMPLATES_DIR = os.getenv("TEMPLATES_DIR")
+BASE_URL = os.getenv("BASE_URL")
 
 # Модель для страны (Country)
 class Country(models.Model):
@@ -25,7 +38,7 @@ class Country(models.Model):
             actions=self.actions,
             created_at=self.created_at,
             updated_at=self.updated_at,
-            url=f"http://localhost:8000/static/countries/country_{self.code}.html"
+            url=f"{BASE_URL}/static/countries/country_{self.code}.html"  # Используем BASE_URL из .env
         )
 
 
@@ -88,7 +101,7 @@ class Offer(models.Model):
             image=self.image,
             created_at=self.created_at,
             updated_at=self.updated_at,
-            url=f"http://localhost:8000/static/offers/offer_{self.id}.html",
+            url=f"{BASE_URL}/static/offers/offer_{self.id}.html",  # Используем BASE_URL из .env
             country_code=self.country.code if self.country else None,
             language=country_language,
             remaining_text=lang['remaining'],
