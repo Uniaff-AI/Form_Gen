@@ -4,183 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Сброс стилей */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* Сброс стилей */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
-            color: #000; /* Черный текст для всего тела */
-            line-height: 1.4;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f4f8;
+        color: #000; /* Черный текст для всего тела */
+        line-height: 1.4;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+        overflow: auto; /* Разрешаем прокрутку на маленьких экранах */
+    }
 
+    .container {
+        width: 100%;
+        max-width: 500px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 3px dashed #1a73e8; /* Статический пунктир */
+    }
+
+    /* Стиль для заголовка и описания */
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #000; /* Черный текст для описания */
+    }
+
+    .header img {
+        max-width: 100%; /* Изображение теперь будет сжиматься */
+        height: auto;
+        max-height: 300px; /* Ограничиваем максимальную высоту */
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+
+    /* Скидка */
+    .discount-info {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ce2323; /* Красный цвет для скидки */
+        margin-top: 8px;
+        margin-bottom: 10px;
+    }
+
+    /* Таймер */
+    .discount-info .countdown {
+        font-size: 26px;
+        font-weight: bold;
+        color: #ce2323; /* Красный цвет для таймера */
+    }
+
+    /* Значения (цены) */
+    .values {
+        display: flex;
+        justify-content: center; /* Центрируем цены */
+        align-items: center;
+        margin-top: 15px;
+        padding-left: 35px;
+    }
+
+    .old-price {
+        text-decoration: line-through;
+        color: #777;
+        font-size: 32px;
+        margin-right: 10px; /* Добавляем отступ между ценами */
+    }
+
+    .new-price {
+        color: #ce2323; /* Красный цвет для новой цены */
+        font-size: 36px;
+        font-weight: bold;
+        display: inline-block; /* Для правильного выравнивания с левой ценой */
+    }
+
+    /* Формы ввода */
+    .form-group {
+        margin-bottom: 15px; /* Немного больше отступов, чтобы сделать форму компактной */
+        width: 100%;
+    }
+
+    .form-group label {
+        font-size: 14px; /* Меньше шрифт для подписей */
+        color: #333;
+        margin-bottom: 3px;
+        padding: 5px;
+        display: block;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-bottom: 5px;
+        color: #000; /* Черный текст для ввода */
+    }
+
+    /* Кнопка */
+    .button-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .button-container a {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #1a73e8;
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+
+    .button-container a:hover {
+        background: #e36038;
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 600px) {
         .container {
-            width: 100%;
-            max-width: 500px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 3px dashed #1a73e8; /* Статический пунктир */
-        }
-
-        /* Стиль для заголовка и описания */
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+            max-width: 100%;
+            padding: 10px;
         }
 
         .header h1 {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #000;
-            margin-bottom: 10px;
+            font-size: 22px;
         }
 
-        .header p {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #000; /* Черный текст для описания */
-        }
-
-        .header img {
-            max-width: 100%; /* Изображение теперь будет сжиматься */
-            height: auto;
-            max-height: 300px; /* Ограничиваем максимальную высоту */
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        /* Скидка */
         .discount-info {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ce2323; /* Красный цвет для скидки */
-            margin-top: 8px;
-            margin-bottom: 10px;
+            font-size: 20px;
         }
 
-        /* Таймер */
-        .discount-info .countdown {
-            font-size: 26px;
-            font-weight: bold;
-            color: #ce2323; /* Красный цвет для таймера */
-        }
-
-        /* Значения (цены) */
         .values {
-            display: flex;
-            justify-content: center; /* Центрируем цены */
-            align-items: center;
-            margin-top: 15px;
-            padding-left: 35px;
-        }
-
-        .old-price {
-            text-decoration: line-through;
-            color: #777;
-            font-size: 32px;
-            margin-right: 10px; /* Добавляем отступ между ценами */
-        }
-
-        .new-price {
-            color: #ce2323; /* Красный цвет для новой цены */
-            font-size: 36px;
-            font-weight: bold;
-            display: inline-block; /* Для правильного выравнивания с левой ценой */
-        }
-
-        /* Формы ввода */
-        .form-group {
-            margin-bottom: 15px; /* Немного больше отступов, чтобы сделать форму компактной */
-            width: 100%;
-        }
-
-        .form-group label {
-            font-size: 14px; /* Меньше шрифт для подписей */
-            color: #333;
-            margin-bottom: 3px;
-            padding: 5px;
-            display: block;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-bottom: 5px;
-            color: #000; /* Черный текст для ввода */
-        }
-
-        /* Кнопка */
-        .button-container {
-            text-align: center;
-            margin-top: 15px;
+            font-size: 24px;
         }
 
         .button-container a {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #1a73e8;
-            color: #fff;
-            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+
+        .discount-info .countdown {
             font-size: 16px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: bold;
         }
+    }
 
-        .button-container a:hover {
-            background: #e36038;
-        }
+</style>
 
-        /* Мобильная адаптация */
-        @media (max-width: 600px) {
-            .container {
-                max-width: 100%;
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .discount-info {
-                font-size: 20px;
-            }
-
-            .values {
-                font-size: 24px;
-            }
-
-            .button-container a {
-                font-size: 14px;
-                padding: 8px 15px;
-            }
-
-            .discount-info .countdown {
-                font-size: 16px;
-            }
-        }
-
-    </style>
 
     <title>{{ offer.offer }}</title>
 </head>
