@@ -1,28 +1,17 @@
+# models.py
+
 from tortoise import fields, models
 from schemas import OfferRead, CountryRead
 from datetime import datetime
 import os
-from dotenv import load_dotenv
-
-# Загружаем переменные окружения из .env файла
-load_dotenv()
-
-# Получаем значения из .env
-DATABASE_URL = os.getenv("DATABASE_URL")
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
-STATIC_URL = os.getenv("STATIC_URL")
-STATIC_OFFERS_DIR = os.getenv("STATIC_OFFERS_DIR")
-TEMPLATES_DIR = os.getenv("TEMPLATES_DIR")
-BASE_URL = os.getenv("BASE_URL")
+from translations import translations
 
 # Модель для страны (Country)
 class Country(models.Model):
-    code = fields.IntField(pk=True)  # Код страны (номер)
+    code = fields.CharField(max_length=3, pk=True)  # Изменено на max_length=3
     name = fields.CharField(max_length=255)  # Имя страны
     currency = fields.CharField(max_length=50)  # Валюта
     language = fields.CharField(max_length=50)  # Язык
-    actions = fields.CharField(max_length=255)  # Действия (например, описание операций)
-
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
@@ -35,12 +24,10 @@ class Country(models.Model):
             name=self.name,
             currency=self.currency,
             language=self.language,
-            actions=self.actions,
             created_at=self.created_at,
             updated_at=self.updated_at,
-            url=f"{BASE_URL}/static/countries/country_{self.code}.html"  # Используем BASE_URL из .env
+            url=f"{os.getenv('BASE_URL')}/static/countries/country_{self.code}.html"  # Используем BASE_URL из .env
         )
-
 
 # Модель для оффера (Offer)
 class Offer(models.Model):
@@ -48,7 +35,7 @@ class Offer(models.Model):
     offer = fields.CharField(max_length=255)
     geo = fields.CharField(max_length=100)
     price = fields.DecimalField(max_digits=10, decimal_places=2)
-    discount = fields.IntField()
+    discount = fields.DecimalField(max_digits=10, decimal_places=2) # Изменил тип на decimal
     button_text = fields.CharField(max_length=100)
     description = fields.TextField()
     image = fields.CharField(max_length=255)
@@ -62,47 +49,22 @@ class Offer(models.Model):
         table = "offers"
 
     def to_read_model(self) -> OfferRead:
-        # Получаем язык страны, к которой привязан оффер
-        country_language = self.country.language
+         country_language = self.country.language
+         lang = translations.get(country_language, translations['English'])
 
-        # Переводы для разных языков
-        translations = {
-            'ru': {
-                "remaining": "Осталось",
-                "discount": "Скидка",
-                "name": "Имя",
-                "phone": "Номер Телефона"
-            },
-            'es': {
-                "remaining": "Quedan",
-                "discount": "Descuento",
-                "name": "Nombre",
-                "phone": "Número de Teléfono"
-            },
-            'en': {
-                "remaining": "Remaining",
-                "discount": "Discount",
-                "name": "Name",
-                "phone": "Phone Number"
-            }
-        }
-
-        # Используем перевод в зависимости от языка страны
-        lang = translations.get(country_language, translations['en'])
-
-        return OfferRead(
+         return OfferRead(
             id=self.id,
             offer=self.offer,
             geo=self.geo,
             price=float(self.price),
-            discount=self.discount,
+            discount=float(self.discount), # Изменил тип на float
             button_text=self.button_text,
             description=self.description,
             image=self.image,
             created_at=self.created_at,
             updated_at=self.updated_at,
-            url=f"{BASE_URL}/static/offers/offer_{self.id}.html",  # Используем BASE_URL из .env
-            country_code=self.country.code if self.country else None,
+            url=f"{os.getenv('BASE_URL')}/static/offers/offer_{self.id}.html",
+            country_code=self.country.code,
             language=country_language,
             remaining_text=lang['remaining'],
             discount_text=lang['discount'],

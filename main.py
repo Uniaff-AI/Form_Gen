@@ -1,15 +1,18 @@
 import os
-import asyncpg
-from fastapi import FastAPI, HTTPException
-from tortoise.contrib.fastapi import register_tortoise
-from typing import List
-from models import Offer, Country
+from fastapi import FastAPI, HTTPException, Query
+from typing import List, Optional
+from models import Offer, Country  # Импортируем модели
 from schemas import OfferCreate, OfferRead, CountryCreate, CountryRead
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from jinja2 import Environment, FileSystemLoader
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv  # Импортируем для работы с .env файлом
+from translations import translations  # Импортируем переводы
+from country import countries_info  # Импортируем данные о странах из country.py
+from tortoise.contrib.fastapi import register_tortoise  # Импортируем register_tortoise
+from datetime import datetime
+from pathlib import Path  # Для более надежной работы с путями
 
 # Загружаем переменные из .env
 load_dotenv()
@@ -36,24 +39,20 @@ app.add_middleware(
 )
 
 # Получение абсолютного пути к папке templates
-current_dir = os.path.dirname(os.path.abspath(__file__))
-templates_dir = os.path.join(current_dir, os.getenv("TEMPLATES_DIR"))
-if templates_dir is None:
-    raise ValueError("Переменная окружения 'TEMPLATES_DIR' не установлена!")
+current_dir = Path(__file__).resolve().parent
+templates_dir = Path(os.getenv("TEMPLATES_DIR", "templates")).resolve() # Default to 'templates'
+if not templates_dir.exists():
+    raise ValueError(f"Директория шаблонов не найдена: {templates_dir}")
 
 # Настройка Jinja2 Environment для генерации HTML
-env = Environment(loader=FileSystemLoader(templates_dir))
+env = Environment(loader=FileSystemLoader(str(templates_dir)))
 
 # Получаем путь для сохранения офферов
-static_offers_dir = os.getenv("STATIC_OFFERS_DIR")
-if static_offers_dir is None:
-    raise ValueError("Переменная окружения 'STATIC_OFFERS_DIR' не установлена!")
-
-static_offers_dir = os.path.abspath(os.path.join(current_dir, static_offers_dir))
-os.makedirs(static_offers_dir, exist_ok=True)
+static_offers_dir = Path(os.getenv("STATIC_OFFERS_DIR", "static/offers")).resolve()# Default to 'static/offers'
+static_offers_dir.mkdir(parents=True, exist_ok=True)
 
 # Смонтировать директорию static для обслуживания статических файлов
-app.mount("/static", StaticFiles(directory=os.path.join(current_dir, "static")), name="static")
+app.mount("/static", StaticFiles(directory=str(current_dir / "static")), name="static")
 
 
 # Асинхронная инициализация Tortoise ORM
@@ -83,13 +82,13 @@ async def startup():
 # Эндпоинт для генерации оффера
 @app.post("/generate_offer/", response_model=dict)
 async def generate_offer(offer: OfferCreate):
-    # Получаем страну по коду
-    country = await Country.get_or_none(code=offer.country_code)
+    # Получаем страну по коду из списка с использованием get_or_none
+    country = await Country.filter(code=offer.country_code).first()
     if not country:
         raise HTTPException(status_code=404, detail="Страна не найдена")
 
-    # Создание записи оффера в базе данных
-    offer_obj = await Offer.create(
+    # Создание оффера
+    offer_obj = Offer(
         offer=offer.offer,
         geo=offer.geo,
         price=offer.price,
@@ -101,30 +100,11 @@ async def generate_offer(offer: OfferCreate):
         country=country
     )
 
-    # Переводы для разных языков
-    translations = {
-        'ru': {
-            "remaining": "Осталось",
-            "discount": "Скидка",
-            "name": "Имя",
-            "phone": "Номер Телефона"
-        },
-        'es': {
-            "remaining": "Quedan",
-            "discount": "Descuento",
-            "name": "Nombre",
-            "phone": "Número de Teléfono"
-        },
-        'en': {
-            "remaining": "Remaining",
-            "discount": "Discount",
-            "name": "Name",
-            "phone": "Phone Number"
-        }
-    }
+    # Сохранение оффера в БД
+    await offer_obj.save()
 
-    # Получаем перевод для нужного языка
-    lang = translations.get(country.language, translations['en'])
+    # Получаем перевод для нужного языка из файла translations
+    lang = translations.get(country.language, translations['English'])
 
     # Генерация HTML-контента с использованием шаблона
     try:
@@ -132,12 +112,16 @@ async def generate_offer(offer: OfferCreate):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка загрузки шаблона: {str(e)}")
 
-    # Передаем нужные данные в шаблон, включая переводы
-    html_content = template.render(offer=offer_obj, translations=lang)
+    # Передаем нужные данные в шаблон, включая переводы и валюту
+    html_content = template.render(
+        offer=offer_obj,
+        translations=lang,
+        currency=country.currency  # Добавляем валюту
+    )
 
     # Определение пути для сохранения HTML-файла
     html_filename = f"offer_{offer_obj.id}.html"
-    html_path = os.path.join(static_offers_dir, html_filename)
+    html_path = static_offers_dir / html_filename
 
     # Сохранение HTML-файла
     try:
@@ -156,47 +140,36 @@ async def generate_offer(offer: OfferCreate):
     return {"url": offer_url}
 
 
-# Эндпоинт для получения всех офферов
-@app.get("/api/offers/", response_model=List[OfferRead])
-async def api_get_offers():
-    # Используем prefetch_related для оптимизации запросов, если есть связанные данные
-    offers = await Offer.all().prefetch_related('country')
-    return [offer.to_read_model() for offer in offers]
-
-
-# Эндпоинт для удаления оффера
-@app.delete("/api/offers/{offer_id}", response_model=dict)
-async def api_delete_offer(offer_id: int):
-    offer = await Offer.get_or_none(id=offer_id)
-    if not offer:
-        raise HTTPException(status_code=404, detail="Оффер не найден")
-    await offer.delete()
-    return {"message": "Оффер удален успешно"}
-
-
-# Эндпоинт для добавления новой страны
-@app.post("/api/countries/", response_model=CountryRead)
-async def api_create_country(country: CountryCreate):
-    # Проверка на уникальность кода страны
-    existing_country = await Country.get_or_none(code=country.code)
-    if existing_country:
-        raise HTTPException(status_code=400, detail="Страна с таким кодом уже существует.")
-
-    country_obj = await Country.create(
-        code=country.code,
-        name=country.name,
-        currency=country.currency,
-        language=country.language,
-        actions=country.actions
-    )
-    return country_obj.to_read_model()
-
-
 # Эндпоинт для получения всех стран
 @app.get("/api/countries/", response_model=List[CountryRead])
 async def api_get_countries():
-    countries = await Country.all()
-    return [country.to_read_model() for country in countries]
+    countries = []
+    for country_info in countries_info:
+        country = Country(code=country_info['code'], name=country_info['name'],
+                         currency=country_info['currency'], language=country_info['language'],
+                         actions="Some actions",  # Установите значение по умолчанию для actions
+                         created_at=datetime.now(),  # Установите значение по умолчанию для created_at
+                         updated_at=datetime.now())  # Установите значение по умолчанию для updated_at
+        countries.append(country)
+    # Сохраняем все страны если их нет
+    for country in countries:
+        if not await Country.filter(code=country.code).exists():
+            await country.save()
+
+    return [country.to_read_model() for country in await Country.all()]
+
+
+# Эндпоинт для получения всех офферов с возможностью фильтрации по стране
+@app.get("/api/offers/", response_model=List[OfferRead])
+async def api_get_offers(country: Optional[str] = Query(None)):
+    if country:
+        # Фильтруем офферы по стране, если параметр передан
+        offers = await Offer.filter(country__code=country).prefetch_related('country')
+    else:
+        # Возвращаем все офферы, если параметр не передан
+        offers = await Offer.all().prefetch_related('country')
+
+    return [offer.to_read_model() for offer in offers]
 
 
 # Запуск приложения

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
         /* Сброс стилей */
         * {
             margin: 0;
@@ -35,41 +34,7 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
-            border: 3px dashed #1a73e8;
-            animation: moveDashedBorder 4s linear infinite;
-        }
-
-        @keyframes moveDashedBorder {
-            0% {
-                border-top: 3px dashed #1a73e8;
-                border-right: 3px dashed transparent;
-                border-bottom: 3px dashed transparent;
-                border-left: 3px dashed transparent;
-            }
-            25% {
-                border-top: 3px dashed transparent;
-                border-right: 3px dashed #1a73e8;
-                border-bottom: 3px dashed transparent;
-                border-left: 3px dashed transparent;
-            }
-            50% {
-                border-top: 3px dashed transparent;
-                border-right: 3px dashed transparent;
-                border-bottom: 3px dashed #1a73e8;
-                border-left: 3px dashed transparent;
-            }
-            75% {
-                border-top: 3px dashed transparent;
-                border-right: 3px dashed transparent;
-                border-bottom: 3px dashed transparent;
-                border-left: 3px dashed #1a73e8;
-            }
-            100% {
-                border-top: 3px dashed #1a73e8;
-                border-right: 3px dashed transparent;
-                border-bottom: 3px dashed transparent;
-                border-left: 3px dashed transparent;
-            }
+            border: 3px dashed #1a73e8; /* Статический пунктир */
         }
 
         /* Стиль для заголовка и описания */
@@ -214,6 +179,7 @@
                 font-size: 16px;
             }
         }
+
     </style>
 
     <title>{{ offer.offer }}</title>
@@ -237,7 +203,7 @@
 
         <!-- Цены -->
         <div class="values">
-            <p class="old-price" id="original_price" data-price="{{ offer.price }}">{{ offer.price }} $</p>
+            <p class="old-price" id="original_price" data-price="{{ offer.price }}">{{ offer.price }} {{ currency }}</p>
             <p class="new-price" id="discounted_price"></p>
         </div>
 
@@ -292,7 +258,7 @@
         let discountedPrice = originalPrice - (originalPrice * discount / 100);
 
         // Отображаем цену со скидкой
-        document.getElementById('discounted_price').textContent = discountedPrice.toFixed(2) + ' $';
+        document.getElementById('discounted_price').textContent = discountedPrice.toFixed(2) + ' {{ currency }}';
     </script>
 </body>
 </html>

@@ -12,7 +12,7 @@ class OfferCreate(BaseModel):
     description: Optional[str] = None  # Сделано необязательным
     image: HttpUrl
     link: Optional[HttpUrl] = None
-    country_code: int = Field(..., alias="countryCode")  # Используем alias для поддержки camelCase
+    country_code: str = Field(..., alias="countryCode") # Теперь строка
 
     class Config:
         populate_by_name = True  # Заменяет allow_population_by_field_name
@@ -31,19 +31,22 @@ class OfferRead(BaseModel):
     created_at: datetime
     updated_at: datetime
     url: HttpUrl
-    country_code: int  # Код страны
-
+    country_code: str  # Код страны
+    language: str
+    remaining_text: str
+    discount_text: str
+    name_text: str
+    phone_text: str
     class Config:
         from_attributes = True  # Заменяет orm_mode
 
 
 # Модель для создания страны
 class CountryCreate(BaseModel):
-    code: int
+    code: str
     name: str
     currency: str
     language: str
-    actions: str
 
     class Config:
         populate_by_name = True
@@ -51,11 +54,10 @@ class CountryCreate(BaseModel):
 
 # Модель для чтения страны (отправка в ответ API)
 class CountryRead(BaseModel):
-    code: int
+    code: str  # Изменено на строку
     name: str
     currency: str
     language: str
-    actions: str
     created_at: datetime
     updated_at: datetime
     url: HttpUrl  # URL для статической страницы страны
