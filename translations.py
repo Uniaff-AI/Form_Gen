@@ -207,3 +207,4 @@ translations = {
         "promo_message_3": "Este descuento para un paquete solo es válido al pedir un tratamiento."
     }
 }
+
