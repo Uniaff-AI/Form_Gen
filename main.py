@@ -40,7 +40,7 @@ app.add_middleware(
 
 # Получение абсолютного пути к папке templates
 current_dir = Path(__file__).resolve().parent
-templates_dir = Path(os.getenv("TEMPLATES_DIR", "templates")).resolve() # Default to 'templates'
+templates_dir = Path(os.getenv("TEMPLATES_DIR", "templates")).resolve()  # Default to 'templates'
 if not templates_dir.exists():
     raise ValueError(f"Директория шаблонов не найдена: {templates_dir}")
 
@@ -48,7 +48,7 @@ if not templates_dir.exists():
 env = Environment(loader=FileSystemLoader(str(templates_dir)))
 
 # Получаем путь для сохранения офферов
-static_offers_dir = Path(os.getenv("STATIC_OFFERS_DIR", "static/offers")).resolve()# Default to 'static/offers'
+static_offers_dir = Path(os.getenv("STATIC_OFFERS_DIR", "static/offers")).resolve()  # Default to 'static/offers'
 static_offers_dir.mkdir(parents=True, exist_ok=True)
 
 # Смонтировать директорию static для обслуживания статических файлов
@@ -170,6 +170,21 @@ async def api_get_offers(country: Optional[str] = Query(None)):
         offers = await Offer.all().prefetch_related('country')
 
     return [offer.to_read_model() for offer in offers]
+
+
+# Эндпоинт для удаления оффера по ID
+@app.delete("/api/offers/{offer_id}", response_model=dict)
+async def delete_offer(offer_id: int):
+    # Попытка получить оффер по ID
+    offer = await Offer.filter(id=offer_id).first()
+
+    if not offer:
+        raise HTTPException(status_code=404, detail="Offer not found")
+
+    # Удаление оффера из базы данных
+    await offer.delete()
+
+    return {"message": f"Offer with ID {offer_id} has been deleted successfully"}
 
 
 # Запуск приложения
