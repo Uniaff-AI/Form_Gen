@@ -4,216 +4,246 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-    /* Сброс стилей */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        /* Сброс стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f0f4f8;
-        color: #000; /* Черный текст для всего тела */
-        line-height: 1.4;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        position: relative;
-        overflow: auto; /* Разрешаем прокрутку на маленьких экранах */
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #000;
+            line-height: 1.4;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: auto;
+        }
 
-    .container {
-        width: 100%;
-        max-width: 500px;
-        background: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        position: relative;
-        overflow: hidden;
-        border: 3px dashed #1a73e8; /* Статический пунктир */
-    }
-
-    /* Стиль для заголовка и описания */
-    .header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .header h1 {
-        font-size: 28px;
-        font-weight: bold;
-        margin-top: 10px;
-        color: #000;
-        margin-bottom: 10px;
-    }
-
-    .header p {
-        font-size: 16px;
-        margin-bottom: 10px;
-        color: #000; /* Черный текст для описания */
-    }
-
-    .header img {
-        max-width: 100%; /* Изображение теперь будет сжиматься */
-        height: auto;
-        max-height: 300px; /* Ограничиваем максимальную высоту */
-        border-radius: 10px;
-        margin-bottom: 12px;
-    }
-
-    /* Скидка */
-    .discount-info {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        color: #ce2323; /* Красный цвет для скидки */
-        margin-top: 8px;
-        margin-bottom: 10px;
-    }
-
-    /* Таймер */
-    .discount-info .countdown {
-        font-size: 26px;
-        font-weight: bold;
-        color: #ce2323; /* Красный цвет для таймера */
-    }
-
-    /* Значения (цены) */
-    .values {
-        display: flex;
-        justify-content: center; /* Центрируем цены */
-        align-items: center;
-        margin-top: 15px;
-        padding-left: 35px;
-    }
-
-    .old-price {
-        text-decoration: line-through;
-        color: #777;
-        font-size: 32px;
-        margin-right: 10px; /* Добавляем отступ между ценами */
-    }
-
-    .new-price {
-        color: #ce2323; /* Красный цвет для новой цены */
-        font-size: 36px;
-        font-weight: bold;
-        display: inline-block; /* Для правильного выравнивания с левой ценой */
-    }
-
-    /* Формы ввода */
-    .form-group {
-        margin-bottom: 15px; /* Немного больше отступов, чтобы сделать форму компактной */
-        width: 100%;
-    }
-
-    .form-group label {
-        font-size: 14px; /* Меньше шрифт для подписей */
-        color: #333;
-        margin-bottom: 3px;
-        padding: 5px;
-        display: block;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        margin-bottom: 5px;
-        color: #000; /* Черный текст для ввода */
-    }
-
-    /* Кнопка */
-    .button-container {
-        text-align: center;
-        margin-top: 15px;
-    }
-
-    .button-container a {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #1a73e8;
-        color: #fff;
-        text-decoration: none;
-        font-size: 16px;
-        border-radius: 50px;
-        transition: all 0.3s ease;
-        font-weight: bold;
-    }
-
-    .button-container a:hover {
-        background: #e36038;
-    }
-
-    /* Мобильная адаптация */
-    @media (max-width: 600px) {
         .container {
-            max-width: 100%;
-            padding: 10px;
+            width: 100%;
+            max-width: 450px; /* Чуть увеличиваем максимальную ширину */
+            background: #ffffff;
+            border-radius: 10px; /* Увеличиваем радиус скругления */
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 18px; /* Увеличиваем отступы */
+            position: relative;
+            overflow: hidden;
+            border: 3px dashed #1a73e8;
+        }
+
+        /* Стиль для заголовка и описания */
+        .header {
+            text-align: center;
+            margin-bottom: 12px; /* Увеличиваем отступ */
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 12px; /* Уменьшаем размер шрифта */
+            font-weight: bold;
+            margin-top: 6px;
+            margin-bottom: 6px;
         }
 
+        .header p {
+            font-size: 12px; /* Уменьшаем шрифт */
+            margin-bottom: 6px;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+            max-height: 270px; /* Немного увеличиваем высоту изображения */
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        /* Скидка */
         .discount-info {
-            font-size: 20px;
+            text-align: center;
+            font-size: 24px; /* Увеличиваем шрифт */
+            font-weight: bold;
+            color: #272626;
+            margin-top: 6px;
+            margin-bottom: 8px;
         }
 
+        /* Таймер */
+        .discount-info .countdown {
+            font-size: 32px; /* Увеличиваем шрифт для таймера */
+            font-weight: bold;
+            color: #686f73;
+        }
+
+        /* Новый стиль для текста "Remaining" */
+        .remaining-text {
+            font-size: 16px; /* Увеличиваем шрифт */
+            color: #686f73;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        /* Значения (цены) */
         .values {
-            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 30px; /* Увеличиваем шрифт */
+            margin-right: 10px;
+        }
+
+        .new-price {
+            color: #ce2323;
+            font-size: 34px; /* Увеличиваем шрифт */
+            font-weight: bold;
+        }
+
+        /* Формы ввода */
+        .form-group {
+            margin-bottom: 14px; /* Увеличиваем отступ */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group label {
+            font-size: 14px; /* Увеличиваем шрифт */
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 8px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 6px;
+            box-sizing: border-box; /* Убедитесь, что padding и border не влияют на ширину */
+        }
+
+        /* Кнопка */
+        .button-container {
+            text-align: center;
+            margin-top: 12px;
         }
 
         .button-container a {
-            font-size: 14px;
-            padding: 8px 15px;
+            display: inline-block;
+            padding: 10px 20px; /* Немного увеличиваем размер кнопки */
+            background: #1a73e8;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px; /* Увеличиваем шрифт */
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .discount-info .countdown {
-            font-size: 16px;
+        .button-container a:hover {
+            background: #e36038;
         }
-    }
 
-</style>
+        /* Новый стиль для текста под кнопкой */
+        .discount-note {
+            font-size: 12px;
+            color: #686f73;
+            text-align: center;
+            margin-top: 12px;
+        }
 
+        /* Мобильная адаптация */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .discount-info {
+                font-size: 22px;
+            }
+
+            .values {
+                font-size: 28px;
+            }
+
+            .button-container a {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .discount-info .countdown {
+                font-size: 18px;
+            }
+
+            .remaining-text {
+                font-size: 14px;
+            }
+        }
+
+        /* Стиль для номера телефона */
+        #phone {
+            padding-left: 50px; /* Увеличиваем отступ слева для номера телефона, чтобы избежать наложения */
+        }
+
+        /* Устанавливаем ширину для контейнера intl-tel-input */
+        .iti {
+            width: 100% !important;
+        }
+
+        /* Устанавливаем ширину для самого поля ввода */
+        .iti input {
+            width: 100% !important;
+        }
+    </style>
+
+    <!-- Подключение стилей и скриптов intl-tel-input -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/intlTelInput.js"></script>
 
     <title>{{ offer.offer }}</title>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{ offer.offer }}</h1>
-            <p>{{ offer.description }}</p>
+            <h1>{{ translations.promo_message_1 }}</h1>
+            <p>{{ translations.promo_message_2 }}</p>
         </div>
 
-        <!-- Картинка -->
         <div class="header">
             <img src="{{ offer.image }}" alt="Изображение продукта">
         </div>
 
-        <!-- Скидка -->
         <div class="discount-info">
             <p>{{ offer.discount }}% {{ translations.discount }}!</p>
         </div>
 
-        <!-- Цены -->
         <div class="values">
             <p class="old-price" id="original_price" data-price="{{ offer.price }}">{{ offer.price }} {{ currency }}</p>
             <p class="new-price" id="discounted_price"></p>
         </div>
 
-        <!-- Таймер -->
         <div class="discount-info">
-            <p class="countdown" id="timer">{{ translations.remaining }}: 10:00</p>
+            <p class="remaining-text">{{ translations.remaining }}</p>
+            <p class="countdown" id="timer">10:00</p>
         </div>
 
-        <!-- Форма -->
         <form action="{{ offer.link }}" method="POST">
             <div class="form-group">
                 <label for="name">{{ translations.name }}</label>
@@ -221,20 +251,31 @@
             </div>
             <div class="form-group">
                 <label for="phone">{{ translations.phone }}</label>
-                <input type="tel" name="phone" id="phone" placeholder="{{ translations.phone }}" required="required">
+                <input type="tel" name="phone" id="phone" placeholder="{{ translations.phone }}" required="required"
+                       inputmode="numeric" maxlength="15" pattern="[0-9]*">
             </div>
             <div class="button-container">
                 <a href="{{ offer.link }}" target="_blank">{{ offer.button_text }}</a>
             </div>
         </form>
+
+        <div class="discount-note">
+            {{ translations.promo_message_3 }}
+        </div>
     </div>
 
     <script>
-        // Перевод на стороне JavaScript
-        const translations = {
-            "remaining": "{{ translations.remaining }}",
-            "discount": "{{ translations.discount }}"
-        };
+        // Инициализация intl-tel-input для поля телефона
+        var input = document.querySelector("#phone");
+        var iti = window.intlTelInput(input, {
+            initialCountry: "us", // Установите страну по умолчанию
+            separateDialCode: true // Разделение кода страны
+        });
+
+        // Ограничение ввода только цифр
+        input.addEventListener('input', function (event) {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Заменяем все, что не цифры
+        });
 
         // Таймер
         let timeRemaining = 600; // 10 минут в секундах
@@ -243,7 +284,7 @@
         function updateTimer() {
             let minutes = Math.floor(timeRemaining / 60);
             let seconds = timeRemaining % 60;
-            countdownDisplay.textContent = `${translations.remaining}: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            countdownDisplay.textContent = ` ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
             if (timeRemaining > 0) {
                 timeRemaining--;
             }
