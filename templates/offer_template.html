@@ -11,7 +11,6 @@
             box-sizing: border-box;
         }
 
-
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f0f4f8;
@@ -28,68 +27,63 @@
 
         .container {
             width: 100%;
-            max-width: 450px; /* Чуть увеличиваем максимальную ширину */
+            max-width: 450px;
             background: #ffffff;
-            border-radius: 10px; /* Увеличиваем радиус скругления */
+            border-radius: 10px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            padding: 18px; /* Увеличиваем отступы */
+            padding: 18px;
             position: relative;
             overflow: hidden;
             border: 3px dashed #1a73e8;
         }
 
-        /* Стиль для заголовка и описания */
         .header {
             text-align: center;
-            margin-bottom: 12px; /* Увеличиваем отступ */
+            margin-bottom: 12px;
         }
 
         .header h1 {
-            font-size: 12px; /* Уменьшаем размер шрифта */
+            font-size: 12px;
             font-weight: bold;
             margin-top: 6px;
             margin-bottom: 6px;
         }
 
         .header p {
-            font-size: 12px; /* Уменьшаем шрифт */
+            font-size: 12px;
             margin-bottom: 6px;
         }
 
         .header img {
             max-width: 100%;
             height: auto;
-            max-height: 270px; /* Немного увеличиваем высоту изображения */
+            max-height: 270px;
             border-radius: 10px;
             margin-bottom: 12px;
         }
 
-        /* Скидка */
         .discount-info {
             text-align: center;
-            font-size: 24px; /* Увеличиваем шрифт */
+            font-size: 24px;
             font-weight: bold;
             color: #272626;
             margin-top: 6px;
             margin-bottom: 8px;
         }
 
-        /* Таймер */
         .discount-info .countdown {
-            font-size: 32px; /* Увеличиваем шрифт для таймера */
+            font-size: 32px;
             font-weight: bold;
             color: #686f73;
         }
 
-        /* Новый стиль для текста "Remaining" */
         .remaining-text {
-            font-size: 16px; /* Увеличиваем шрифт */
+            font-size: 16px;
             color: #686f73;
             text-align: center;
             margin-bottom: 6px;
         }
 
-        /* Значения (цены) */
         .values {
             display: flex;
             justify-content: center;
@@ -100,19 +94,18 @@
         .old-price {
             text-decoration: line-through;
             color: #777;
-            font-size: 30px; /* Увеличиваем шрифт */
+            font-size: 30px;
             margin-right: 10px;
         }
 
         .new-price {
             color: #ce2323;
-            font-size: 34px; /* Увеличиваем шрифт */
+            font-size: 34px;
             font-weight: bold;
         }
 
-        /* Формы ввода */
         .form-group {
-            margin-bottom: 14px; /* Увеличиваем отступ */
+            margin-bottom: 14px;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -120,7 +113,7 @@
         }
 
         .form-group label {
-            font-size: 14px; /* Увеличиваем шрифт */
+            font-size: 14px;
             color: #333;
             margin-bottom: 6px;
         }
@@ -132,10 +125,20 @@
             border-radius: 8px;
             border: 1px solid #ddd;
             margin-bottom: 6px;
-            box-sizing: border-box; /* Убедитесь, что padding и border не влияют на ширину */
+            box-sizing: border-box;
         }
 
-        /* Кнопка */
+        /* Убедитесь, что поле для имени имеет те же стили, что и поле для телефона */
+        #name {
+            width: 60%; /* ширина поля будет 100% родительского контейнера */
+            padding: 12px 8px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 6px;
+            box-sizing: border-box;
+        }
+
         .button-container {
             text-align: center;
             margin-top: 12px;
@@ -143,11 +146,11 @@
 
         .button-container a {
             display: inline-block;
-            padding: 10px 20px; /* Немного увеличиваем размер кнопки */
+            padding: 10px 20px;
             background: #1a73e8;
             color: #fff;
             text-decoration: none;
-            font-size: 16px; /* Увеличиваем шрифт */
+            font-size: 16px;
             border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -157,7 +160,6 @@
             background: #e36038;
         }
 
-        /* Новый стиль для текста под кнопкой */
         .discount-note {
             font-size: 12px;
             color: #686f73;
@@ -165,7 +167,6 @@
             margin-top: 12px;
         }
 
-        /* Мобильная адаптация */
         @media (max-width: 600px) {
             .container {
                 max-width: 100%;
@@ -198,19 +199,15 @@
             }
         }
 
-        /* Стиль для номера телефона */
-        #phone {
-            padding-left: 50px; /* Увеличиваем отступ слева для номера телефона, чтобы избежать наложения */
+        /* Новый стиль для флага и кода страны */
+        .iti__flag-container {
+            padding-left: 10px;
         }
 
-        /* Устанавливаем ширину для контейнера intl-tel-input */
-        .iti {
-            width: 100% !important;
-        }
-
-        /* Устанавливаем ширину для самого поля ввода */
-        .iti input {
-            width: 100% !important;
+        /* Красный цвет для цифры 17 */
+        .highlight {
+            color: red;
+            font-weight: bold;
         }
     </style>
 
@@ -224,7 +221,7 @@
     <div class="container">
         <div class="header">
             <h1>{{ translations.promo_message_1 }}</h1>
-            <p>{{ translations.promo_message_2 }}</p>
+            <p>{{ translations.promo_message_2 | replace("17", "<span class='highlight'>17</span>") }}</p>
         </div>
 
         <div class="header">
@@ -266,11 +263,11 @@
     </div>
 
     <script>
-        // Инициализация intl-tel-input для поля телефона
+        // Инициализация intl-tel-input для поля телефона с кодом страны из шаблона
         var input = document.querySelector("#phone");
         var iti = window.intlTelInput(input, {
-            initialCountry: "us", // Установите страну по умолчанию
-            separateDialCode: true // Разделение кода страны
+            initialCountry: "{{ offer.country.code | lower }}", // Используем код страны из шаблона
+            separateDialCode: true, // Разделение кода страны
         });
 
         // Ограничение ввода только цифр
@@ -297,11 +294,17 @@
         let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));  // Исходная цена
         let discount = {{ offer.discount }};    // Скидка в процентах
 
-        // Вычисление цены со скидкой
-        let discountedPrice = originalPrice - (originalPrice * discount / 100);
+        // Проверка значений
+        if (isNaN(originalPrice) || isNaN(discount)) {
+            console.error("Ошибка: Неверные значения цены или скидки");
+        } else {
+            // Вычисление цены со скидкой
+            let discountedPrice = originalPrice - (originalPrice * discount / 100);
 
-        // Отображаем цену со скидкой
-        document.getElementById('discounted_price').textContent = discountedPrice.toFixed(2) + ' {{ currency }}';
+            // Округление и преобразование в строку, чтобы избавиться от экспоненциальной записи
+            discountedPrice = Math.round(discountedPrice * 100) / 100;  // Округляем до двух знаков после запятой
+            document.getElementById('discounted_price').textContent = String(discountedPrice.toFixed(2)) + ' {{ currency }}';
+        }
     </script>
 </body>
 </html>

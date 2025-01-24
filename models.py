@@ -34,8 +34,8 @@ class Offer(models.Model):
     id = fields.IntField(pk=True)
     offer = fields.CharField(max_length=255)
     geo = fields.CharField(max_length=100)
-    price = fields.DecimalField(max_digits=10, decimal_places=2)
-    discount = fields.DecimalField(max_digits=10, decimal_places=2) # Изменил тип на decimal
+    price = fields.IntField()  # Изменено на IntField
+    discount = fields.IntField()  # Изменено на IntField
     button_text = fields.CharField(max_length=100)
     description = fields.TextField()
     image = fields.CharField(max_length=255)
@@ -56,8 +56,8 @@ class Offer(models.Model):
             id=self.id,
             offer=self.offer,
             geo=self.geo,
-            price=float(self.price),
-            discount=float(self.discount), # Изменил тип на float
+            price=self.price,  # Оставляем как int, без преобразования
+            discount=self.discount,  # Оставляем как int, без преобразования
             button_text=self.button_text,
             description=self.description,
             image=self.image,

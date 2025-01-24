@@ -1,3 +1,5 @@
+# schemas.py
+
 from pydantic import BaseModel, HttpUrl, Field
 from typing import Optional
 from datetime import datetime
@@ -6,16 +8,16 @@ from datetime import datetime
 class OfferCreate(BaseModel):
     offer: str
     geo: str
-    price: float
-    discount: float  # Изменено с int на float для поддержки дробных значений
+    price: int  # Изменено на int для целочисленных значений
+    discount: int  # Изменено на int для целочисленных значений
     button_text: str = Field(..., alias="buttonText")
     description: Optional[str] = None  # Сделано необязательным
     image: HttpUrl
     link: Optional[HttpUrl] = None
-    country_code: str = Field(..., alias="countryCode") # Теперь строка
+    country_code: str = Field(..., alias="countryCode")  # Теперь строка
 
     class Config:
-        populate_by_name = True  # Заменяет allow_population_by_field_name
+        populate_by_name = True
 
 
 # Модель для чтения оффера (отправка в ответ API)
@@ -23,8 +25,8 @@ class OfferRead(BaseModel):
     id: int
     offer: str
     geo: str
-    price: float
-    discount: float  # Изменено с int на float
+    price: int  # Используем целое число
+    discount: int  # Используем целое число
     button_text: str
     description: str
     image: HttpUrl
