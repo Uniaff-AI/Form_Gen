@@ -1,5 +1,3 @@
-# models.py
-
 from tortoise import fields, models
 from schemas import OfferRead, CountryRead
 from datetime import datetime
@@ -9,9 +7,9 @@ from translations import translations
 # Модель для страны (Country)
 class Country(models.Model):
     code = fields.CharField(max_length=3, pk=True)  # Изменено на max_length=3
-    name = fields.CharField(max_length=255)  # Имя страны
-    currency = fields.CharField(max_length=50)  # Валюта
-    language = fields.CharField(max_length=50)  # Язык
+    name = fields.CharField(max_length=255)         # Имя страны
+    currency = fields.CharField(max_length=50)      # Валюта
+    language = fields.CharField(max_length=50)      # Язык
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
@@ -34,10 +32,8 @@ class Offer(models.Model):
     id = fields.IntField(pk=True)
     offer = fields.CharField(max_length=255)
     geo = fields.CharField(max_length=100)
-    price = fields.IntField()  # Изменено на IntField
-    discount = fields.IntField()  # Изменено на IntField
-    button_text = fields.CharField(max_length=100)
-    description = fields.TextField()
+    price = fields.IntField()     # Целочисленное поле
+    discount = fields.IntField()  # Целочисленное поле
     image = fields.CharField(max_length=255)
     link = fields.CharField(max_length=255, null=True)
     country = fields.ForeignKeyField("models.Country", related_name="offers")  # Привязка к стране
@@ -49,17 +45,15 @@ class Offer(models.Model):
         table = "offers"
 
     def to_read_model(self) -> OfferRead:
-         country_language = self.country.language
-         lang = translations.get(country_language, translations['English'])
+        country_language = self.country.language
+        lang = translations.get(country_language, translations['English'])
 
-         return OfferRead(
+        return OfferRead(
             id=self.id,
             offer=self.offer,
             geo=self.geo,
-            price=self.price,  # Оставляем как int, без преобразования
-            discount=self.discount,  # Оставляем как int, без преобразования
-            button_text=self.button_text,
-            description=self.description,
+            price=self.price,
+            discount=self.discount,
             image=self.image,
             created_at=self.created_at,
             updated_at=self.updated_at,

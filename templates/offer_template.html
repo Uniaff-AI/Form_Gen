@@ -130,7 +130,7 @@
 
         /* Убедитесь, что поле для имени имеет те же стили, что и поле для телефона */
         #name {
-            width: 60%; /* ширина поля будет 100% родительского контейнера */
+            width: 60%;
             padding: 12px 8px;
             font-size: 14px;
             border-radius: 8px;
@@ -233,8 +233,12 @@
         </div>
 
         <div class="values">
-            <p class="old-price" id="original_price" data-price="{{ offer.price }}">{{ offer.price }} {{ currency }}</p>
-            <p class="new-price" id="discounted_price"></p>
+            <!-- «Старая» цена (по факту: цена + "discount" %) -->
+            <p class="old-price" id="discounted_price"></p>
+            <!-- «Новая» цена (исходная) -->
+            <p class="new-price" id="original_price" data-price="{{ offer.price }}">
+                {{ offer.price }} {{ currency }}
+            </p>
         </div>
 
         <div class="discount-info">
@@ -253,7 +257,8 @@
                        inputmode="numeric" maxlength="15" pattern="[0-9]*">
             </div>
             <div class="button-container">
-                <a href="{{ offer.link }}" target="_blank">{{ offer.button_text }}</a>
+                <!-- Текст кнопки теперь берётся из translations.button_text -->
+                <a href="{{ offer.link }}" target="_blank">{{ translations.button_text }}</a>
             </div>
         </form>
 
@@ -263,26 +268,26 @@
     </div>
 
     <script>
-        // Инициализация intl-tel-input для поля телефона с кодом страны из шаблона
+        // Инициализация intl-tel-input для поля телефона с кодом страны
         var input = document.querySelector("#phone");
         var iti = window.intlTelInput(input, {
-            initialCountry: "{{ offer.country.code | lower }}", // Используем код страны из шаблона
+            initialCountry: "{{ offer.country.code | lower }}", // Используем код страны из оффера
             separateDialCode: true, // Разделение кода страны
         });
 
         // Ограничение ввода только цифр
         input.addEventListener('input', function (event) {
-            this.value = this.value.replace(/[^0-9]/g, ''); // Заменяем все, что не цифры
+            this.value = this.value.replace(/[^0-9]/g, '');
         });
 
         // Таймер
-        let timeRemaining = 600; // 10 минут в секундах
+        let timeRemaining = 600; // 10 минут в секундах (10 * 60)
         const countdownDisplay = document.getElementById('timer');
 
         function updateTimer() {
             let minutes = Math.floor(timeRemaining / 60);
             let seconds = timeRemaining % 60;
-            countdownDisplay.textContent = ` ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            countdownDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
             if (timeRemaining > 0) {
                 timeRemaining--;
             }
@@ -291,19 +296,19 @@
         setInterval(updateTimer, 1000);
 
         // Получаем значения из HTML
-        let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));  // Исходная цена
-        let discount = {{ offer.discount }};    // Скидка в процентах
+        let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));
+        let discount = {{ offer.discount }}; // процент "скидки" (или надбавки)
 
-        // Проверка значений
         if (isNaN(originalPrice) || isNaN(discount)) {
             console.error("Ошибка: Неверные значения цены или скидки");
         } else {
-            // Вычисление цены со скидкой
-            let discountedPrice = originalPrice - (originalPrice * discount / 100);
+            // Вычисляем «старую» цену (с учётом "discount" %)
+            let increasedPrice = originalPrice + (originalPrice * discount / 100);
+            increasedPrice = Math.round(increasedPrice * 100) / 100;
 
-            // Округление и преобразование в строку, чтобы избавиться от экспоненциальной записи
-            discountedPrice = Math.round(discountedPrice * 100) / 100;  // Округляем до двух знаков после запятой
-            document.getElementById('discounted_price').textContent = String(discountedPrice.toFixed(2)) + ' {{ currency }}';
+            // Выводим «старую» (перечёркнутую) цену в нужный блок
+            document.getElementById('discounted_price').textContent =
+                increasedPrice.toFixed(2) + ' {{ currency }}';
         }
     </script>
 </body>

@@ -1,107 +1,107 @@
 currencies = {
     'Belgium': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Indonesia': {
-        "currency": "Rp"  # Rupiah
+        "currency": "IDR"  # Rupiah
     },
     'Czech Republic': {
-        "currency": "Kč"  # Koruna
+        "currency": "CZK"  # Koruna
     },
     'Italy': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Germany': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Bulgaria': {
-        "currency": "лв"  # Лев
+        "currency": "BGN"  # Lev
     },
     'France': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Poland': {
-        "currency": "zł"  # Złoty
+        "currency": "PLN"  # Złoty
     },
     'India': {
-        "currency": "₹"  # Rupee
+        "currency": "INR"  # Rupee
     },
     'Romania': {
-        "currency": "lei"  # Leu
+        "currency": "RON"  # Leu
     },
     'Mexico': {
-        "currency": "$"  # Peso
+        "currency": "MXN"  # Peso
     },
     'United Kingdom': {
-        "currency": "£"  # Pound Sterling
+        "currency": "GBP"  # Pound Sterling
     },
     'Spain': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Austria': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Turkey': {
-        "currency": "₺"  # Türk Lirası
+        "currency": "TRY"  # Türk Lirası
     },
     'Malaysia': {
-        "currency": "RM"  # Ringgit
+        "currency": "MYR"  # Ringgit
     },
     'Portugal': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'United States': {
-        "currency": "$"  # United States Dollar
+        "currency": "USD"  # United States Dollar
     },
     'Ecuador': {
-        "currency": "$"  # United States Dollar
+        "currency": "USD"  # United States Dollar
     },
     'Colombia': {
-        "currency": "$"  # Peso Colombiano
+        "currency": "COP"  # Peso Colombiano
     },
     'Peru': {
-        "currency": "S/"  # Nuevo Sol
+        "currency": "PEN"  # Nuevo Sol
     },
     'Nigeria': {
-        "currency": "₦"  # Naira
+        "currency": "NGN"  # Naira
     },
     'Philippines': {
-        "currency": "₱"  # Peso
+        "currency": "PHP"  # Peso
     },
     'Guatemala': {
-        "currency": "Q"  # Quetzal
+        "currency": "GTQ"  # Quetzal
     },
     'Chile': {
-        "currency": "$"  # Peso Chileno
+        "currency": "CLP"  # Peso Chileno
     },
     'Vietnam': {
-        "currency": "₫"  # Đồng
+        "currency": "VND"  # Đồng
     },
     'Lithuania': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Greece': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Honduras': {
-        "currency": "L"  # Lempira
+        "currency": "HNL"  # Lempira
     },
     'Slovenia': {
-        "currency": "€"  # Euro
+        "currency": "EUR"  # Euro
     },
     'Serbia': {
-        "currency": "дин"  # Dinar
+        "currency": "RSD"  # Dinar
     },
     'Bangladesh': {
-        "currency": "৳"  # Taka
+        "currency": "BDT"  # Taka
     },
     'Argentina': {
-        "currency": "$"  # Peso
+        "currency": "ARS"  # Peso
     },
     'Thailand': {
-        "currency": "฿"  # Baht
+        "currency": "THB"  # Baht
     },
     'Hungary': {
-        "currency": "Ft"  # Forint
+        "currency": "HUF"  # Forint
     }
 }

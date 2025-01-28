@@ -1,5 +1,3 @@
-# schemas.py
-
 from pydantic import BaseModel, HttpUrl, Field
 from typing import Optional
 from datetime import datetime
@@ -8,13 +6,12 @@ from datetime import datetime
 class OfferCreate(BaseModel):
     offer: str
     geo: str
-    price: int  # Изменено на int для целочисленных значений
-    discount: int  # Изменено на int для целочисленных значений
-    button_text: str = Field(..., alias="buttonText")
-    description: Optional[str] = None  # Сделано необязательным
+    price: int
+    discount: int
+    # Удалили button_text и description
     image: HttpUrl
     link: Optional[HttpUrl] = None
-    country_code: str = Field(..., alias="countryCode")  # Теперь строка
+    country_code: str = Field(..., alias="countryCode")
 
     class Config:
         populate_by_name = True
@@ -25,20 +22,20 @@ class OfferRead(BaseModel):
     id: int
     offer: str
     geo: str
-    price: int  # Используем целое число
-    discount: int  # Используем целое число
-    button_text: str
-    description: str
+    price: int
+    discount: int
+    # Удалили button_text и description
     image: HttpUrl
     created_at: datetime
     updated_at: datetime
     url: HttpUrl
-    country_code: str  # Код страны
+    country_code: str
     language: str
     remaining_text: str
     discount_text: str
     name_text: str
     phone_text: str
+
     class Config:
         from_attributes = True  # Заменяет orm_mode
 
@@ -56,13 +53,13 @@ class CountryCreate(BaseModel):
 
 # Модель для чтения страны (отправка в ответ API)
 class CountryRead(BaseModel):
-    code: str  # Изменено на строку
+    code: str
     name: str
     currency: str
     language: str
     created_at: datetime
     updated_at: datetime
-    url: HttpUrl  # URL для статической страницы страны
+    url: HttpUrl
 
     class Config:
         populate_by_name = True
@@ -73,8 +70,7 @@ class CountryRead(BaseModel):
 class OfferTranslationCreate(BaseModel):
     language: str
     offer_text: str
-    description: str
-    button_text: str
+    # Удалили description и button_text
     remaining_text: str = "Осталось"
     discount_text: str = "Скидка"
     name_text: str = "Имя"
