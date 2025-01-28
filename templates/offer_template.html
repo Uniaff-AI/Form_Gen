@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ offer.language }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         /* Сброс стилей */
         * {
@@ -144,7 +144,7 @@
             margin-top: 12px;
         }
 
-        .button-container a {
+        .button-container button {
             display: inline-block;
             padding: 10px 20px;
             background: #1a73e8;
@@ -154,9 +154,11 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
 
-        .button-container a:hover {
+        .button-container button:hover {
             background: #e36038;
         }
 
@@ -185,7 +187,7 @@
                 font-size: 28px;
             }
 
-            .button-container a {
+            .button-container button {
                 font-size: 14px;
                 padding: 8px 16px;
             }
@@ -212,7 +214,10 @@
     </style>
 
     <!-- Подключение стилей и скриптов intl-tel-input -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/css/intlTelInput.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/css/intlTelInput.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/intlTelInput.js"></script>
 
     <title>{{ offer.offer }}</title>
@@ -246,19 +251,52 @@
             <p class="countdown" id="timer">10:00</p>
         </div>
 
-        <form action="{{ offer.link }}" method="POST">
+        <!-- Форма заказа -->
+        <form
+            action="https://stopdias.com/lander/send/"
+            method="POST"
+            id="orderForm"
+            style="text-align: center;"
+        >
+            <!-- Если нужно передавать дополнительные скрытые поля, добавляем их: -->
+            <input type="hidden" name="aff" value="rocket" />
+            <input type="hidden" name="offer" value="548832" />
+            <input type="hidden" name="offer_name" value="Tensital" />
+            <input type="hidden" name="country" value="RO" />
+            <input type="hidden" name="kt_campaign" value="5648" />
+            <input type="hidden" name="kt_offer" value="5420" />
+            <input type="hidden" name="utm_source" value="{utm_source}" />
+            <input type="hidden" name="subid" value="f53gitcdvn1v" />
+            <input type="hidden" name="pixel" value="{pixel}" />
+            <input type="hidden" name="template" value="success2" />
+
             <div class="form-group">
                 <label for="name">{{ translations.name }}</label>
-                <input type="text" name="name" id="name" placeholder="{{ translations.name }}" required="required">
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="{{ translations.name }}"
+                    required="required"
+                />
             </div>
+
             <div class="form-group">
                 <label for="phone">{{ translations.phone }}</label>
-                <input type="tel" name="phone" id="phone" placeholder="{{ translations.phone }}" required="required"
-                       inputmode="numeric" maxlength="15" pattern="[0-9]*">
+                <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    placeholder="{{ translations.phone }}"
+                    required="required"
+                    inputmode="numeric"
+                    maxlength="15"
+                />
             </div>
+
             <div class="button-container">
-                <!-- Текст кнопки теперь берётся из translations.button_text -->
-                <a href="{{ offer.link }}" target="_blank">{{ translations.button_text }}</a>
+                <!-- Теперь это кнопка, а не ссылка -->
+                <button type="submit">{{ translations.button_text }}</button>
             </div>
         </form>
 
@@ -275,9 +313,14 @@
             separateDialCode: true, // Разделение кода страны
         });
 
-        // Ограничение ввода только цифр
+        // Ограничение ввода только цифр (можно убрать при необходимости)
         input.addEventListener('input', function (event) {
             this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Перед отправкой формы подставляем номер в формате +XX...
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            input.value = iti.getNumber();
         });
 
         // Таймер
@@ -295,20 +338,18 @@
 
         setInterval(updateTimer, 1000);
 
-        // Получаем значения из HTML
+        // Рассчитать "старую" (перечёркнутую) цену
         let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));
-        let discount = {{ offer.discount }}; // процент "скидки" (или надбавки)
+        let discount = {{ offer.discount }}; // процент "скидки"
 
         if (isNaN(originalPrice) || isNaN(discount)) {
             console.error("Ошибка: Неверные значения цены или скидки");
         } else {
-            // Вычисляем «старую» цену (с учётом "discount" %)
             let increasedPrice = originalPrice + (originalPrice * discount / 100);
             increasedPrice = Math.round(increasedPrice * 100) / 100;
 
-            // Выводим «старую» (перечёркнутую) цену в нужный блок
             document.getElementById('discounted_price').textContent =
-                increasedPrice.toFixed(2) + ' {{ currency }}';
+                increasedPrice.toFixed(2) + " {{ currency }}";
         }
     </script>
 </body>
