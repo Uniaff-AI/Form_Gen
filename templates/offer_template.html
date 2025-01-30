@@ -1,356 +1,368 @@
 <!DOCTYPE html>
 <html lang="{{ offer.language }}">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-        /* Сброс стилей */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* Сброс стилей */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
-            color: #000;
-            line-height: 1.4;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-            overflow: auto;
-        }
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f4f8;
+      color: #000;
+      line-height: 1.4;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      overflow: auto;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            padding: 18px;
-            position: relative;
-            overflow: hidden;
-            border: 3px dashed #1a73e8;
-        }
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 3px dashed #1a73e8;
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 12px;
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
 
-        .header h1 {
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 6px;
-            margin-bottom: 6px;
-        }
+    .header h1 {
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
 
-        .header p {
-            font-size: 12px;
-            margin-bottom: 6px;
-        }
+    .header p {
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
 
-        .header img {
-            max-width: 100%;
-            height: auto;
-            max-height: 270px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
+    .header img {
+      max-width: 100%;
+      height: auto;
+      max-height: 270px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
 
-        .discount-info {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #272626;
-            margin-top: 6px;
-            margin-bottom: 8px;
-        }
+    .discount-info {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #272626;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
 
-        .discount-info .countdown {
-            font-size: 32px;
-            font-weight: bold;
-            color: #686f73;
-        }
+    .discount-info .countdown {
+      font-size: 32px;
+      font-weight: bold;
+      color: #686f73;
+    }
 
-        .remaining-text {
-            font-size: 16px;
-            color: #686f73;
-            text-align: center;
-            margin-bottom: 6px;
-        }
+    .remaining-text {
+      font-size: 16px;
+      color: #686f73;
+      text-align: center;
+      margin-bottom: 6px;
+    }
 
-        .values {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 12px;
-        }
+    .values {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 12px;
+    }
 
-        .old-price {
-            text-decoration: line-through;
-            color: #777;
-            font-size: 30px;
-            margin-right: 10px;
-        }
+    .old-price {
+      text-decoration: line-through;
+      color: #777;
+      font-size: 30px;
+      margin-right: 10px;
+    }
 
-        .new-price {
-            color: #ce2323;
-            font-size: 34px;
-            font-weight: bold;
-        }
+    .new-price {
+      color: #ce2323;
+      font-size: 34px;
+      font-weight: bold;
+    }
 
-        .form-group {
-            margin-bottom: 14px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .form-group {
+      margin-bottom: 14px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        .form-group label {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 6px;
-        }
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 6px;
+    }
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 8px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-bottom: 6px;
-            box-sizing: border-box;
-        }
+    .form-group input {
+      width: 100%;
+      padding: 12px 8px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 6px;
+      box-sizing: border-box;
+    }
 
-        /* Убедитесь, что поле для имени имеет те же стили, что и поле для телефона */
-        #name {
-            width: 60%;
-            padding: 12px 8px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-bottom: 6px;
-            box-sizing: border-box;
-        }
+    /* Ширина поля имени — такой же стиль, если вам нужно. */
+    #name {
+      width: 60%;
+    }
 
-        .button-container {
-            text-align: center;
-            margin-top: 12px;
-        }
+    .button-container {
+      text-align: center;
+      margin-top: 12px;
+    }
 
-        .button-container button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #1a73e8;
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
+    .button-container button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #1a73e8;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
 
-        .button-container button:hover {
-            background: #e36038;
-        }
+    .button-container button:hover {
+      background: #e36038;
+    }
 
-        .discount-note {
-            font-size: 12px;
-            color: #686f73;
-            text-align: center;
-            margin-top: 12px;
-        }
+    .discount-note {
+      font-size: 12px;
+      color: #686f73;
+      text-align: center;
+      margin-top: 12px;
+    }
 
-        @media (max-width: 600px) {
-            .container {
-                max-width: 100%;
-                padding: 12px;
-            }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 100%;
+        padding: 12px;
+      }
 
-            .header h1 {
-                font-size: 16px;
-            }
+      .header h1 {
+        font-size: 16px;
+      }
 
-            .discount-info {
-                font-size: 22px;
-            }
+      .discount-info {
+        font-size: 22px;
+      }
 
-            .values {
-                font-size: 28px;
-            }
+      .values {
+        font-size: 28px;
+      }
 
-            .button-container button {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
+      .button-container button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
 
-            .discount-info .countdown {
-                font-size: 18px;
-            }
+      .discount-info .countdown {
+        font-size: 18px;
+      }
 
-            .remaining-text {
-                font-size: 14px;
-            }
-        }
+      .remaining-text {
+        font-size: 14px;
+      }
+    }
 
-        /* Новый стиль для флага и кода страны */
-        .iti__flag-container {
-            padding-left: 10px;
-        }
+    /* Если нужно выделять "17" красным */
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
 
-        /* Красный цвет для цифры 17 */
-        .highlight {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    /* Отступ для флага */
+    .iti__flag-container {
+      padding-left: 10px;
+    }
+  </style>
 
-    <!-- Подключение стилей и скриптов intl-tel-input -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/css/intlTelInput.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/intlTelInput.js"></script>
+  <!-- Подключаем стили intl-tel-input -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/css/intlTelInput.css"
+  />
 
-    <title>{{ offer.offer }}</title>
+  <title>{{ offer.offer }}</title>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>{{ translations.promo_message_1 }}</h1>
-            <p>{{ translations.promo_message_2 | replace("17", "<span class='highlight'>17</span>") }}</p>
-        </div>
-
-        <div class="header">
-            <img src="{{ offer.image }}" alt="Изображение продукта">
-        </div>
-
-        <div class="discount-info">
-            <p>{{ offer.discount }}% {{ translations.discount }}!</p>
-        </div>
-
-        <div class="values">
-            <!-- «Старая» цена (по факту: цена + "discount" %) -->
-            <p class="old-price" id="discounted_price"></p>
-            <!-- «Новая» цена (исходная) -->
-            <p class="new-price" id="original_price" data-price="{{ offer.price }}">
-                {{ offer.price }} {{ currency }}
-            </p>
-        </div>
-
-        <div class="discount-info">
-            <p class="remaining-text">{{ translations.remaining }}</p>
-            <p class="countdown" id="timer">10:00</p>
-        </div>
-
-        <!-- Форма заказа -->
-        <form
-            action="https://stopdias.com/lander/send/"
-            method="POST"
-            id="orderForm"
-            style="text-align: center;"
-        >
-            <!-- Если нужно передавать дополнительные скрытые поля, добавляем их: -->
-            <input type="hidden" name="aff" value="rocket" />
-            <input type="hidden" name="offer" value="548832" />
-            <input type="hidden" name="offer_name" value="Tensital" />
-            <input type="hidden" name="country" value="RO" />
-            <input type="hidden" name="kt_campaign" value="5648" />
-            <input type="hidden" name="kt_offer" value="5420" />
-            <input type="hidden" name="utm_source" value="{utm_source}" />
-            <input type="hidden" name="subid" value="f53gitcdvn1v" />
-            <input type="hidden" name="pixel" value="{pixel}" />
-            <input type="hidden" name="template" value="success2" />
-
-            <div class="form-group">
-                <label for="name">{{ translations.name }}</label>
-                <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="{{ translations.name }}"
-                    required="required"
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="phone">{{ translations.phone }}</label>
-                <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    placeholder="{{ translations.phone }}"
-                    required="required"
-                    inputmode="numeric"
-                    maxlength="15"
-                />
-            </div>
-
-            <div class="button-container">
-                <!-- Теперь это кнопка, а не ссылка -->
-                <button type="submit">{{ translations.button_text }}</button>
-            </div>
-        </form>
-
-        <div class="discount-note">
-            {{ translations.promo_message_3 }}
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>{{ translations.promo_message_1 }}</h1>
+      <p>{{ translations.promo_message_2 | replace("17", "<span class='highlight'>17</span>") }}</p>
     </div>
 
-    <script>
-        // Инициализация intl-tel-input для поля телефона с кодом страны
-        var input = document.querySelector("#phone");
-        var iti = window.intlTelInput(input, {
-            initialCountry: "{{ offer.country.code | lower }}", // Используем код страны из оффера
-            separateDialCode: true, // Разделение кода страны
-        });
+    <div class="header">
+      <img src="{{ offer.image }}" alt="Изображение продукта" />
+    </div>
 
-        // Ограничение ввода только цифр (можно убрать при необходимости)
-        input.addEventListener('input', function (event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
+    <div class="discount-info">
+      <p>{{ offer.discount }}% {{ translations.discount }}!</p>
+    </div>
 
-        // Перед отправкой формы подставляем номер в формате +XX...
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            input.value = iti.getNumber();
-        });
+    <div class="values">
+      <!-- Старая цена (цена + discount%) -->
+      <p class="old-price" id="discounted_price"></p>
+      <!-- Новая цена (исходная) -->
+      <p class="new-price" id="original_price" data-price="{{ offer.price }}">
+        {{ offer.price }} {{ currency }}
+      </p>
+    </div>
 
-        // Таймер
-        let timeRemaining = 600; // 10 минут в секундах (10 * 60)
-        const countdownDisplay = document.getElementById('timer');
+    <div class="discount-info">
+      <p class="remaining-text">{{ translations.remaining }}</p>
+      <p class="countdown" id="timer">10:00</p>
+    </div>
 
-        function updateTimer() {
-            let minutes = Math.floor(timeRemaining / 60);
-            let seconds = timeRemaining % 60;
-            countdownDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-            if (timeRemaining > 0) {
-                timeRemaining--;
-            }
-        }
+    <!-- Форма заказа -->
+    <form
+      action="https://stopdias.com/lander/send/"
+      method="POST"
+      id="orderForm"
+      style="text-align: center;"
+    >
+      <!-- Доп. поля для API -->
+      <input type="hidden" name="aff" value="rocket" />
+      <input type="hidden" name="offer" value="548832" />
+      <input type="hidden" name="offer_name" value="Tensital" />
+      <input type="hidden" name="country" id="country" />
+      <input type="hidden" name="kt_campaign" value="5648" />
+      <input type="hidden" name="kt_offer" value="5420" />
+      <input type="hidden" name="utm_source" value="{utm_source}" />
+      <input type="hidden" name="subid" value="f53gitcdvn1v" />
+      <input type="hidden" name="pixel" value="{pixel}" />
+      <input type="hidden" name="template" value="success2" />
 
-        setInterval(updateTimer, 1000);
+      <div class="form-group">
+        <label for="name">{{ translations.name }}</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="{{ translations.name }}"
+          required="required"
+        />
+      </div>
 
-        // Рассчитать "старую" (перечёркнутую) цену
-        let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));
-        let discount = {{ offer.discount }}; // процент "скидки"
+      <div class="form-group">
+        <label for="phone">{{ translations.phone }}</label>
+        <input
+          type="tel"
+          name="phone"
+          id="phone"
+          placeholder="{{ translations.phone }}"
+          required="required"
+          inputmode="numeric"
+          maxlength="15"
+        />
+      </div>
 
-        if (isNaN(originalPrice) || isNaN(discount)) {
-            console.error("Ошибка: Неверные значения цены или скидки");
-        } else {
-            let increasedPrice = originalPrice + (originalPrice * discount / 100);
-            increasedPrice = Math.round(increasedPrice * 100) / 100;
+      <div class="button-container">
+        <button type="submit">{{ translations.button_text }}</button>
+      </div>
+    </form>
 
-            document.getElementById('discounted_price').textContent =
-                increasedPrice.toFixed(2) + " {{ currency }}";
-        }
-    </script>
+    <div class="discount-note">{{ translations.promo_message_3 }}</div>
+  </div>
+
+  <!-- Подключаем intl-tel-input + utils.js -->
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/intlTelInput.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/utils.js"></script>
+
+  <script>
+    // Находим поле phone
+    var phoneInput = document.querySelector("#phone");
+
+    // Инициализируем intl-tel-input
+    var iti = window.intlTelInput(phoneInput, {
+      initialCountry: "{{ offer.country.code | lower }}", // Из оффера
+      separateDialCode: true, // код страны отображается отдельно
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.8/build/js/utils.js"
+    });
+
+    // ОГРАНИЧЕНИЕ: Разрешаем ввод только цифр (удаляем всё, кроме цифр)
+    phoneInput.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // При сабмите формы
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Останавливаем мгновенную отправку
+
+      // Проверяем валидность (для отладки в консоли)
+      console.log("isValidNumber:", iti.isValidNumber());
+
+      // Получаем телефон в формате +XXX...
+      var e164Number = iti.getNumber();
+      console.log("getNumber (E.164):", e164Number);
+
+      // Подставляем итоговое значение в поле
+      phoneInput.value = e164Number;
+
+      // Устанавливаем ISO2-код страны (например, "IN", "RU" и т.п.)
+      var selectedCountryData = iti.getSelectedCountryData();
+      document.getElementById('country').value = selectedCountryData.iso2.toUpperCase();
+
+      // Теперь отправляем форму реально
+      this.submit();
+    });
+
+    // Таймер 10:00 (пример)
+    let timeRemaining = 600;
+    const countdownDisplay = document.getElementById('timer');
+
+    function updateTimer() {
+      let minutes = Math.floor(timeRemaining / 60);
+      let seconds = timeRemaining % 60;
+      countdownDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+      if (timeRemaining > 0) {
+        timeRemaining--;
+      }
+    }
+    setInterval(updateTimer, 1000);
+
+    // Рассчитываем «старую» (перечёркнутую) цену
+    let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));
+    let discount = {{ offer.discount }};
+
+    if (isNaN(originalPrice) || isNaN(discount)) {
+      console.error("Ошибка: Неверные значения цены или скидки");
+    } else {
+      let increasedPrice = originalPrice + (originalPrice * discount / 100);
+      increasedPrice = Math.round(increasedPrice * 100) / 100;
+      document.getElementById('discounted_price').textContent =
+        increasedPrice.toFixed(2) + " {{ currency }}";
+    }
+  </script>
 </body>
 </html>
