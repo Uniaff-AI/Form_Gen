@@ -353,15 +353,15 @@
 
     // Рассчитываем «старую» (перечёркнутую) цену
     let originalPrice = parseFloat(document.getElementById('original_price').getAttribute('data-price'));
-    let discount = {{ offer.discount }};
+    let discount = {{ offer.discount }} / 100;
 
     if (isNaN(originalPrice) || isNaN(discount)) {
       console.error("Ошибка: Неверные значения цены или скидки");
     } else {
-      let increasedPrice = originalPrice + (originalPrice * discount / 100);
-      increasedPrice = Math.round(increasedPrice * 100) / 100;
+      let originalPriceCalculation = originalPrice / (1 - discount);
+      originalPriceCalculation = Math.round(originalPriceCalculation * 100) / 100;
       document.getElementById('discounted_price').textContent =
-        increasedPrice.toFixed(2) + " {{ currency }}";
+        originalPriceCalculation.toFixed(2) + " {{ currency }}";
     }
   </script>
 </body>
