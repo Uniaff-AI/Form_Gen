@@ -84,23 +84,26 @@
       margin-bottom: 6px;
     }
 
+    /* Блок для цен */
     .values {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 12px;
+      flex-wrap: nowrap;       /* Запрещаем перенос */
+      white-space: nowrap;     /* Не переносим текст */
+      gap: 10px;               /* Расстояние между ценами */
     }
 
     .old-price {
       text-decoration: line-through;
       color: #777;
-      font-size: 30px;
-      margin-right: 10px;
+      font-size: clamp(20px, 5vw, 30px); /* Адаптивная функция clamp */
     }
 
     .new-price {
       color: #ce2323;
-      font-size: 34px;
+      font-size: clamp(24px, 6vw, 34px); /* Адаптивная функция clamp */
       font-weight: bold;
     }
 
@@ -128,7 +131,7 @@
       box-sizing: border-box;
     }
 
-    /* Ширина поля имени — такой же стиль, если вам нужно. */
+    /* Ширина поля имени (опционально, если требуется) */
     #name {
       width: 60%;
     }
@@ -195,13 +198,12 @@
       }
     }
 
-    /* Если нужно выделять "17" красным */
     .highlight {
       color: red;
       font-weight: bold;
     }
 
-    /* Отступ для флага */
+    /* Отступ для флага (если нужно) */
     .iti__flag-container {
       padding-left: 10px;
     }
