@@ -9,12 +9,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: formgen-backend
     container_name: formgen-backend
     restart: always
     env_file:
       - .env
     ports:
-      - "8003:8000"  # внешний:внутренний
+      - "8003:8000"
     volumes:
       - ./templates:/app/templates
     networks:
