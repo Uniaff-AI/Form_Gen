@@ -1,0 +1,21 @@
+name: Auto Deploy to Test Server
+
+on:
+  push:
+    branches:
+      - test
+
+env:
+  RUN_MODE: docker-compose
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run deploy script
+        run: |
+          python3 /opt/cicd/autodeploy.py ${{ github.event.repository.name }} ${{ env.RUN_MODE }}
